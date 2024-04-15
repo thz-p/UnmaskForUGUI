@@ -238,27 +238,46 @@ namespace Coffee.UIExtensions
 
         private static void Smoothing(MaskableGraphic graphic, float smooth)
         {
+            // 检查传入的图形对象是否为空，如果为空则直接返回，不进行任何操作
             if (!graphic) return;
 
+            // 开始性能分析器样本，用于性能调优
             Profiler.BeginSample("[Unmask] Smoothing");
+
+            // 获取图形对象的画布渲染器
             var canvasRenderer = graphic.canvasRenderer;
+            
+            // 获取当前颜色
             var currentColor = canvasRenderer.GetColor();
+            
+            // 目标透明度初始化为1
             var targetAlpha = 1f;
+            
+            // 如果图形对象可遮罩并且平滑度大于0
             if (graphic.maskable && 0 < smooth)
             {
+                // 计算当前透明度，考虑到图形对象的颜色和继承的透明度
                 var currentAlpha = graphic.color.a * canvasRenderer.GetInheritedAlpha();
+                
+                // 如果当前透明度大于0
                 if (0 < currentAlpha)
                 {
+                    // 根据平滑度计算目标透明度，确保不会出现除以0的情况
                     targetAlpha = Mathf.Lerp(0.01f, 0.002f, smooth) / currentAlpha;
                 }
             }
 
+            // 如果当前颜色的透明度与目标透明度不接近
             if (!Mathf.Approximately(currentColor.a, targetAlpha))
             {
+                // 更新当前颜色的透明度，并确保其在0到1的范围内
                 currentColor.a = Mathf.Clamp01(targetAlpha);
+                
+                // 设置更新后的颜色到画布渲染器
                 canvasRenderer.SetColor(currentColor);
             }
 
+            // 结束性能分析器样本
             Profiler.EndSample();
         }
     }
