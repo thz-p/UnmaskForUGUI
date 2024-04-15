@@ -14,31 +14,29 @@ namespace Coffee.UIExtensions
     public class Unmask : MonoBehaviour, IMaterialModifier
     {
         //################################
-        // Constant or Static Members.
+        // 常量或静态成员。
         //################################
         private static readonly Vector2 s_Center = new Vector2(0.5f, 0.5f);
 
 
         //################################
-        // Serialize Members.
+        // 序列化成员。
         //################################
-        [Tooltip("Fit graphic's transform to target transform.")]
+        [Tooltip("将图形的变换适配到目标变换。")]
         [SerializeField] private RectTransform m_FitTarget;
 
-        [Tooltip("Fit graphic's transform to target transform on LateUpdate every frame.")]
+        [Tooltip("在每帧的 LateUpdate 中适配图形的变换到目标变换。")]
         [SerializeField] private bool m_FitOnLateUpdate;
 
-        [Tooltip("Unmask affects only for children.")]
+        [Tooltip("解除遮罩只影响子对象。")]
         [SerializeField] private bool m_OnlyForChildren = false;
 
-        [Tooltip("Show the graphic that is associated with the unmask render area.")]
+        [Tooltip("显示与解除遮罩渲染区域相关联的图形。")]
         [SerializeField] private bool m_ShowUnmaskGraphic = false;
 
-        [Tooltip("Edge smoothing.")]
+        [Tooltip("边缘平滑度。")]
         [Range(0f, 1f)]
         [SerializeField] private float m_EdgeSmoothing = 0f;
-
-
 
         //################################
         // 公共成员。
