@@ -80,20 +80,21 @@ namespace Coffee.UIExtensions
         }
 
         /// <summary>
-        /// Unmask affects only for children.
+        /// 解除遮罩只影响子对象。
         /// </summary>
         public bool onlyForChildren
         {
             get { return m_OnlyForChildren; }
             set
             {
+                // 设置属性值并标记图形为"脏"
                 m_OnlyForChildren = value;
                 SetDirty();
             }
         }
 
         /// <summary>
-        /// Edge smooting.
+        /// 边缘平滑度。
         /// </summary>
         public float edgeSmoothing
         {
