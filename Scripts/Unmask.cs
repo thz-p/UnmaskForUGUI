@@ -160,41 +160,49 @@ namespace Coffee.UIExtensions
 
 
         //################################
-        // Private Members.
+        // 私有成员。
         //################################
-        private Material _unmaskMaterial;
-        private Material _revertUnmaskMaterial;
-        private MaskableGraphic _graphic;
+        private Material _unmaskMaterial;       // 用于保存解除遮罩后的材质
+        private Material _revertUnmaskMaterial; // 用于保存重新应用遮罩前的材质
+        private MaskableGraphic _graphic;       // 保存图形对象的引用
 
         /// <summary>
-        /// This function is called when the object becomes enabled and active.
+        /// 当对象变为启用和活动状态时调用此函数。
         /// </summary>
         private void OnEnable()
         {
+            // 如果存在适配目标，则将图形适配到目标
             if (m_FitTarget)
             {
                 FitTo(m_FitTarget);
             }
+            // 标记图形为"脏"
             SetDirty();
         }
 
         /// <summary>
-        /// This function is called when the behaviour becomes disabled () or inactive.
+        /// 当行为被禁用（）或非活动状态时调用此函数。
         /// </summary>
         private void OnDisable()
         {
+            // 移除解除遮罩后的材质和重新应用遮罩前的材质
             StencilMaterial.Remove(_unmaskMaterial);
             StencilMaterial.Remove(_revertUnmaskMaterial);
+            // 重置为null，释放资源
             _unmaskMaterial = null;
             _revertUnmaskMaterial = null;
 
+            // 如果图形对象存在
             if (graphic)
             {
                 var canvasRenderer = graphic.canvasRenderer;
+                // 设置画布渲染器的属性
                 canvasRenderer.hasPopInstruction = false;
                 canvasRenderer.popMaterialCount = 0;
+                // 标记图形为"脏"
                 graphic.SetMaterialDirty();
             }
+            // 标记图形为"脏"
             SetDirty();
         }
 
