@@ -41,21 +41,26 @@ namespace Coffee.UIExtensions
 
 
         //################################
-        // Public Members.
+        // 公共成员。
         //################################
-        /// <summary>
-        /// The graphic associated with the unmask.
-        /// </summary>
-        public MaskableGraphic graphic { get { return _graphic ?? (_graphic = GetComponent<MaskableGraphic>()); } }
 
         /// <summary>
-        /// Fit graphic's transform to target transform.
+        /// 与解除遮罩相关联的图形。
+        /// </summary>
+        public MaskableGraphic graphic
+        {
+            get { return _graphic ?? (_graphic = GetComponent<MaskableGraphic>()); }
+        }
+
+        /// <summary>
+        /// 将图形的变换适配到目标变换。
         /// </summary>
         public RectTransform fitTarget
         {
             get { return m_FitTarget; }
             set
             {
+                // 设置属性值，并将图形适配到目标变换
                 m_FitTarget = value;
                 FitTo(m_FitTarget);
             }
