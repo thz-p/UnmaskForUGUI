@@ -102,40 +102,60 @@ namespace Coffee.UIExtensions
         }
 
         /// <summary>
-        /// Perform material modification in this function.
+        /// 在此函数中执行材质修改。
         /// </summary>
-        /// <returns>Modified material.</returns>
-        /// <param name="baseMaterial">Configured Material.</param>
+        /// <returns>修改后的材质。</returns>
+        /// <param name="baseMaterial">配置好的材质。</param>
         public Material GetModifiedMaterial(Material baseMaterial)
         {
+            // 如果当前对象未启用，则直接返回原始材质
             if (!isActiveAndEnabled)
             {
                 return baseMaterial;
             }
 
+            // 查找要停止处理的Canvas的Transform
             Transform stopAfter = MaskUtilities.FindRootSortOverrideCanvas(transform);
+            
+            // 获取当前对象到停止处理的Canvas的遮罩深度
             var stencilDepth = MaskUtilities.GetStencilDepth(transform, stopAfter);
+            
+            // 计算所需的模板缓冲位
             var desiredStencilBit = 1 << stencilDepth;
 
+            // 移除之前的解除遮罩材质
             StencilMaterial.Remove(_unmaskMaterial);
+            
+            // 添加新的解除遮罩材质
             _unmaskMaterial = StencilMaterial.Add(baseMaterial, desiredStencilBit - 1, StencilOp.Invert, CompareFunction.Equal, m_ShowUnmaskGraphic ? ColorWriteMask.All : (ColorWriteMask)0, desiredStencilBit - 1, (1 << 8) - 1);
 
-            // Unmask affects only for children.
+            // 获取图形对象的CanvasRenderer
             var canvasRenderer = graphic.canvasRenderer;
+            
+            // 如果仅对子对象进行解除遮罩
             if (m_OnlyForChildren)
             {
+                // 移除之前的重新应用遮罩材质
                 StencilMaterial.Remove(_revertUnmaskMaterial);
+                
+                // 添加新的重新应用遮罩材质
                 _revertUnmaskMaterial = StencilMaterial.Add(baseMaterial, (1 << 7), StencilOp.Invert, CompareFunction.Equal, (ColorWriteMask)0, (1 << 7), (1 << 8) - 1);
+                
+                // 启用渲染器的POP指令
                 canvasRenderer.hasPopInstruction = true;
                 canvasRenderer.popMaterialCount = 1;
+                
+                // 设置渲染器的POP材质
                 canvasRenderer.SetPopMaterial(_revertUnmaskMaterial, 0);
             }
             else
             {
+                // 如果不仅对子对象进行解除遮罩，则禁用POP指令
                 canvasRenderer.hasPopInstruction = false;
                 canvasRenderer.popMaterialCount = 0;
             }
 
+            // 返回解除遮罩材质
             return _unmaskMaterial;
         }
 
