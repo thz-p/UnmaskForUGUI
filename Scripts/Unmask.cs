@@ -203,27 +203,32 @@ namespace Coffee.UIExtensions
         /// </summary>
         private void LateUpdate()
         {
-#if UNITY_EDITOR
-            if (m_FitTarget && (m_FitOnLateUpdate || !Application.isPlaying))
-#else
-			if (m_FitTarget && m_FitOnLateUpdate)
-#endif
-            {
-                FitTo(m_FitTarget);
-            }
+            #if UNITY_EDITOR
+                // 如果在Unity编辑器中，并且适配目标存在，且需要在LateUpdate中进行适配或者在编辑模式下
+                if (m_FitTarget && (m_FitOnLateUpdate || !Application.isPlaying))
+            #else
+                // 如果不在Unity编辑器中，但是适配目标存在，并且需要在LateUpdate中进行适配
+                if (m_FitTarget && m_FitOnLateUpdate)
+            #endif
+                {
+                    // 调用适配函数，将图形适配到指定目标
+                    FitTo(m_FitTarget);
+                }
 
+            // 调用平滑函数，对图形进行平滑处理
             Smoothing(graphic, m_EdgeSmoothing);
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         /// <summary>
         /// This function is called when the script is loaded or a value is changed in the inspector (Called in the editor only).
         /// </summary>
         private void OnValidate()
         {
+            // 将图形标记为"脏"
             SetDirty();
         }
-#endif
+        #endif
 
         /// <summary>
         /// Mark the graphic as dirty.
@@ -232,6 +237,7 @@ namespace Coffee.UIExtensions
         {
             if (graphic)
             {
+                // 将图形的材质标记为"脏"
                 graphic.SetMaterialDirty();
             }
         }
