@@ -62,18 +62,23 @@ namespace Coffee.UIExtensions
         }
 
         /// <summary>
-        /// Fit graphic's transform to target transform on LateUpdate every frame.
+        /// 在每帧的 LateUpdate 中适配图形的变换到目标变换。
         /// </summary>
-        public bool fitOnLateUpdate { get { return m_FitOnLateUpdate; } set { m_FitOnLateUpdate = value; } }
+        public bool fitOnLateUpdate
+        {
+            get { return m_FitOnLateUpdate; }
+            set { m_FitOnLateUpdate = value; }
+        }
 
         /// <summary>
-        /// Show the graphic that is associated with the unmask render area.
+        /// 显示与解除遮罩渲染区域相关联的图形。
         /// </summary>
         public bool showUnmaskGraphic
         {
             get { return m_ShowUnmaskGraphic; }
             set
             {
+                // 设置属性值并标记图形为"脏"
                 m_ShowUnmaskGraphic = value;
                 SetDirty();
             }
