@@ -25,20 +25,20 @@ namespace Coffee.UIExtensions
         public Unmask targetUnmask { get { return m_TargetUnmask; } set { m_TargetUnmask = value; } }
 
         /// <summary>
-        /// Given a point and a camera is the raycast valid.
+        /// 给定一个点和一个相机，判断射线投射是否有效。
         /// </summary>
-        /// <returns>Valid.</returns>
-        /// <param name="sp">Screen position.</param>
-        /// <param name="eventCamera">Raycast camera.</param>
+        /// <returns>是否有效。</returns>
+        /// <param name="sp">屏幕位置。</param>
+        /// <param name="eventCamera">射线投射相机。</param>
         public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
         {
-            // Skip if deactived.
+            // 如果当前对象或目标解除遮罩未启用，则视为有效
             if (!isActiveAndEnabled || !m_TargetUnmask || !m_TargetUnmask.isActiveAndEnabled)
             {
                 return true;
             }
 
-            // check inside
+            // 检查是否在解除遮罩区域内
             if (eventCamera)
             {
                 return !RectTransformUtility.RectangleContainsScreenPoint((m_TargetUnmask.transform as RectTransform), sp, eventCamera);
@@ -48,7 +48,6 @@ namespace Coffee.UIExtensions
                 return !RectTransformUtility.RectangleContainsScreenPoint((m_TargetUnmask.transform as RectTransform), sp);
             }
         }
-
 
         //################################
         // Private Members.
