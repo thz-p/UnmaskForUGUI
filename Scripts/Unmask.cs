@@ -140,24 +140,32 @@ namespace Coffee.UIExtensions
         }
 
         /// <summary>
-        /// Fit to target transform.
+        /// 将当前 RectTransform 适配到目标 RectTransform。
         /// </summary>
-        /// <param name="target">Target transform.</param>
+        /// <param name="target">目标 RectTransform。</param>
         public void FitTo(RectTransform target)
         {
+            // 获取当前对象的 RectTransform
             var rt = transform as RectTransform;
 
+            // 设置当前对象的中心点、位置和旋转为目标对象的中心点、位置和旋转
             rt.pivot = target.pivot;
             rt.position = target.position;
             rt.rotation = target.rotation;
 
+            // 计算目标对象和父对象的缩放比例
             var s1 = target.lossyScale;
             var s2 = rt.parent.lossyScale;
+
+            // 根据缩放比例调整当前对象的缩放
             rt.localScale = new Vector3(s1.x / s2.x, s1.y / s2.y, s1.z / s2.z);
+
+            // 设置当前对象的大小为目标对象的大小
             rt.sizeDelta = target.rect.size;
+
+            // 设置当前对象的锚点为中心点
             rt.anchorMax = rt.anchorMin = s_Center;
         }
-
 
         //################################
         // 私有成员。
